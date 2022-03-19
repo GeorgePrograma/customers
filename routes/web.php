@@ -2,6 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+use App\Controllers\Controller;
+use App\Http\Controllers\PruebasController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

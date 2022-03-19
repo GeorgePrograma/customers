@@ -9,10 +9,15 @@ class Region extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "description",
+        "status"
+    ];
+
     //Relacion de Uno a Muchos
     public function communes(){
         return $this->hasMany("App\Models\Commune");
-    } 
+    }
 
 
 
