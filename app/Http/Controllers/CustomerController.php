@@ -6,28 +6,28 @@ use Illuminate\Http\Request;
 use App\Models\Customers;
 use App\Models\Region;
 use App\Models\Commune;
+use App\Models\Log;
+
 use App\Http\Resources\Customer as CustomerResource;
 
 class CustomerController extends Controller
 {
-    private $debug = false;
+    private $debug;
 
     public function __construct(){
-        $debug = env("APP_DEBUG", true);
+        $this->debug = env("APP_DEBUG", false);
     }
     
 
     public function index(){
 
-        return $this->debug;
-
         $customers = new Customers;
+
+        $this->checkDebug("out", "get");
         return response()->json([
             "success"=>true,
             "data"=>CustomerResource::collection($customers->getCustomersActives())
         ]);
-
-       /*  ?dni=dexb1&id_reg=5&id_com=23&email=jorge.beristain@gmail.com&name=jorge&last_name=beristain&address=av mariano&date_reg=2022-03-10 18:44:14&status=I */
     }
 
 
@@ -61,6 +61,8 @@ class CustomerController extends Controller
                 "address" => $request->address,
                 "date_reg" => date('Y-m-d H:i:s')
             ]);
+
+            $this->checkDebug("entry", "post");
             return response()->json(["success"=>$customer], 201 );
         }
         else{
@@ -81,6 +83,7 @@ class CustomerController extends Controller
             $data = $customer->getCustomerActiveByDNI($id)->first() ;
         }
 
+        $this->checkDebug("out", "get");
         return $data = response()->json(["success"=>true, "data"=>$data], 200);
     }
 
@@ -96,10 +99,29 @@ class CustomerController extends Controller
             if($existCustomer->status == "A" || $existCustomer->status == "I")
             {
                 $success = $existCustomer->deleteCostumer($existCustomer->dni);
+                $this->checkDebug("destroy", "delete");
                 return response()->json(["success"=>true], 204);
             }
-
-
     }
+
+
+
+
+    private function checkDebug($typeRequest, $method){
+
+        if($this->debug == false && $typeRequest == "entry" ){
+            Log::create([
+                "type_request"=>$typeRequest,
+                "method"=>$method,
+                "ip"=>$_SERVER["REMOTE_ADDR"]
+            ]);
+        }else if($this->debug == true ){
+            Log::create([
+                "type_request"=>$typeRequest,
+                "method"=>$method,
+                "ip"=>$_SERVER["REMOTE_ADDR"]
+            ]);
+        }
+    } 
 
 }
