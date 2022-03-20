@@ -45,7 +45,7 @@ class Customers extends Model
             "regions.description as descRegion",
             "communes.description as descCommune"  
         )
-        ->where("customers.status", "=", "A")
+        ->where("customers.dni", "=", $id)
         ->get();
     }
 
@@ -66,7 +66,7 @@ class Customers extends Model
     }
 
 
-    public function getCustomerActive($id){
+    public function getCustomerActiveByDNI($id){
         return Customers::
         join("communes", "communes.id_com", "=", "customers.id_com" )
         ->join("regions", "regions.id_reg", "=", "customers.id_reg" )
@@ -82,6 +82,21 @@ class Customers extends Model
         ->get();
     }
 
+    public function getCustomerActiveByEmail($email){
+        return Customers::
+        join("communes", "communes.id_com", "=", "customers.id_com" )
+        ->join("regions", "regions.id_reg", "=", "customers.id_reg" )
+        ->select(
+            "customers.name",
+            "customers.last_name",
+            "customers.address",
+            "regions.description as descRegion",
+            "communes.description as descCommune"  
+        )
+        ->where("customers.email", "=","$email")
+        ->where("customers.status", "=", "A")
+        ->get();
+    }
 
     public function deleteCostumer($id){
         return DB::table("customers")

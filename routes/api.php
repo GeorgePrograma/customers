@@ -5,6 +5,13 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\UserController;
+
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,17 +28,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Get All customers
-Route::get("customer", [CustomerController::class, "index"]);
 
-//Get one customer
-Route::get("customer/{id}", [CustomerController::class, "show"]);
+Route::post('login', [UserController::class, 'authenticate'] );
 
-//Create customer
-Route::post("customer/", [CustomerController::class, "store"]);
 
-//Delete one customer
-Route::delete("customer/{customer}", [CustomerController::class, "destroy"]);
+Route::group(['middleware' => ['jwt.verify']], function () {
+    //Get All customers
+    Route::get("customer", [CustomerController::class, "index"]);
+    //Get one customer
+    Route::get("customer/{id}", [CustomerController::class, "show"]);
+    //Create customer
+    Route::post("customer/", [CustomerController::class, "store"]);
+    //Delete one customer
+    Route::delete("customer/{customer}", [CustomerController::class, "destroy"]);
+});
+
 
 
 //Route::resource("/customer",CustomerController::class);

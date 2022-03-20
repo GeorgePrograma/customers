@@ -19,4 +19,10 @@ class Commune extends Model
         return $this->hasMany("App\Models\Customers");
     }
 
+    public function searchCommune($id){
+        $commune = new Commune;
+        return $commune->where("id_com", "=", $id)->first();
+    }
+
+
 }

@@ -20,7 +20,10 @@ class Region extends Model
     }
 
 
-
+    public function searchRegion($id){
+        $region = new Region;
+        return $region->where("id_reg", "=", $id)->first();
+    }
 
 
 }
