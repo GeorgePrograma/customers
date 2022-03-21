@@ -94,7 +94,7 @@ class CustomerController extends Controller
         $existCustomer = $customer->getAllInfoCustomer($id)->first();
     
         if(!$existCustomer){
-            return response()->json(["success"=>false, "error"=>"Row doesn`t exist"]);
+            return response()->json(["success"=>false, "error"=>"Registro no existe"]);
         }else
             if($existCustomer->status == "A" || $existCustomer->status == "I")
             {
