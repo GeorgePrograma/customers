@@ -1,64 +1,100 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+API CUSTOMERS
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Requisitos para ejecución tener instalado: 
 
-## About Laravel
+    PHP 7.4
+    Composer y
+    Mysql
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1. Clonar el repositorio
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+2. Ubicarse en el directorio del repositorio clonado y ejecutar el siguiente comando 
+    composer install
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+3. Duplicar el archivo de configuracion .env.example y renombrar la copia con el nombre a .env
 
-## Learning Laravel
+4. Buscar y colocar el valor de false en la siguiente variable
+    APP_DEBUG=false
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+5. Para la base de datos colocar la siguiente informacion al archivo .env
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=mydb
+        DB_USERNAME=root
+        DB_PASSWORD=
 
-## Laravel Sponsors
+6. Crear la base de datos con el nombre de mydb
+7. Ejecutar los siguientes comandos en orden
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+        php artisan key:generate
+        php artisan jwt:secret
+        php artisan cache:clear
+        php artisan config:clear
+        php artisan migrate
+        php artisan db:seed
+        php artisan serve
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
 
-## Contributing
+Antes de realizar peticiones en POSTMAN generar un token con la siguiente información
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    Dirección: http://127.0.0.1:<port>/api/login
+    Método: POST
 
-## Code of Conduct
+    Body > raw > json
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    {
+        "email": "prueba@gmail.com",
+        "password": 321123
+    }
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+Con la ayuda del token y POSTMAN iniciar las peticiones GET POST Y DELETE, (colocar el token como se indica)
+	
+	Headers
+		KEY							VALUE
+		Authorization				Bearer <token>
+		Accept						application/json
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+
+==== GENERANDO PETICIONES ====
+
+
+En una nueva pestaña de POSTMAN (diferente a donde se solicito el token)
+Crear un customer 
+
+    URL: http://127.0.0.1:<port>/api/customer/
+    Método: POST
+
+        Params
+            KEY							VALUE
+            dni							RSGGDE2500
+            id_reg						4
+            id_com						6
+            email						emailtesting@gmail.com
+            name						Juan
+            last_name					Perez
+            address						Avenida Heroica #100
+
+
+
+Solicitar todos los customers
+
+    URL: http://127.0.0.1:<port>/api/customer/
+    Método: GET
+
+Solicitar un customer en especifico
+
+    URL: http://127.0.0.1:<port>/api/customer/<dni> ó <email>
+    Método: GET
+
+Eliminar un customer
+    
+    URL: http://127.0.0.1:<port>/api/customer/<dni>
+    Método: DELETE
